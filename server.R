@@ -39,37 +39,47 @@ shinyServer(m1 <-
     model2.pred <- reactive(
       {
         population <- input$population
-        predict(model_rl, newdata = data.frame(population))
+        roadlength <- input$roadlength
+        predict(model_rl, newdata = data.frame(population, roadlength))
       }
     )
     model3.pred <- reactive(
       {
-        population <- input$population
-        predict(model_rrl, newdata = data.frame(population))
+        population     <- input$population
+        roadlength     <- input$roadlength
+        railroadlength <- input$railroadlength
+        predict(model_rrl, newdata = data.frame(population, roadlength, railroadlength))
       }
     )
     
     
     output$plotmodels <- renderPlot({
-      population <- input$population
+      population     <- input$population
+      roadlength     <- input$roadlength
+      railroadlength <- input$railroadlength
       
       plot(peoplecars$population, peoplecars$cars1jan, type="l",
-           xlab = "Population", ylab = "Number of cars", main="Cars in the Netherlands")
+           xlab = "Population", ylab = "Number of cars", main="Cars in the Netherlands",
+           xlim=c(10000000, 20000000), ylim=c(0, 14000000),
+           col = "darkorange", lwd="3")
       #axis(1, 0:32,labels=0:32*10,line=3,col="blue",col.ticks="blue",col.axis="blue")
       
       if (input$model_pop) {
         # only 2 coefficients
-        abline(model_pop, col = "blue", lwd="3")
+        abline(model_pop, col = "blue", lwd="2")
+        points(population,  model1.pred(), pch = 20, cex = 2, col = "blue")
       }
       
       if (input$model_rl) {
         # we have 3 coefficients, we keep the roadlength constant, not quite right. 
-        abline(model_rl$coefficients[1] + model_rl$coefficients[3]*roadlength, model_rl$coefficients[2], col = "green", lwd="3")
+        abline(model_rl$coefficients[1] + model_rl$coefficients[3]*roadlength, model_rl$coefficients[2], col = "green", lwd="2")
+        points(population,  model2.pred(), pch = 20, cex = 2, col = "green")
       }
       
       if (input$model_rrl) {
         # we have 4 coefficients, we keep the roadlength and railroadlength constant, not quite right. 
-        abline(model_rrl$coefficients[1] + model_rrl$coefficients[3]*roadlength + model_rrl$coefficients[4]*railroadlength, model_rrl$coefficients[2], col = "red", lwd="3")
+        abline(model_rrl$coefficients[1] + model_rrl$coefficients[3]*roadlength + model_rrl$coefficients[4]*railroadlength, model_rrl$coefficients[2], col = "red", lwd="2")
+        points(population,  model3.pred(), pch = 20, cex = 2, col = "red")
       }
       
       #points(population, model1.pred(), col = "red" , pch = 16, cex = 2)

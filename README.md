@@ -8,9 +8,9 @@ How does the number of cars in the Netherlands depend on:
 - the lenght of all the roads (in the Netherlands)
 - the length of all the railroads (in the Netherlands)
 
-One moght expect that:
-- the more people the more cars
-- the more road the more cars
-- the more railroad the less cars.
+One might expect that:
+- the more people, the more cars,
+- the more roads, the more cars,
+- the more railroads, the less cars.
 
-Its not a serious set up, the simple linear regression models are ot quite right (yet).
+It's not a serious set up, the simple linear regression models are not quite right (yet).

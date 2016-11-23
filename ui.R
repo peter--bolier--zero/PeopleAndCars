@@ -11,6 +11,7 @@ library(shiny)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
+  theme = "bootstrap.css",
   
   # Application title
   titlePanel("People and cars in the Netherlands"),
@@ -21,19 +22,23 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-      numericInput ("population", label = h3("Population")                     , value = 14000000),
+      sliderInput("population"    , label = ("Population")            , min = 10000000, max = 20000000, value = 16000000),
+      sliderInput("roadlength"    , label = ("Total length roads")    , min = 90000   , max = 200000  , value = 100000  ),
+      sliderInput("railroadlength", label = ("Total length railroad") , min = 2000    , max = 10000   , value = 4000    ),
+      
       checkboxInput("model_pop" , label = "Model: population        (show/hide)", value = TRUE),
       checkboxInput("model_rl"  , label = "Model: + road length     (show/hide)", value = TRUE),
       checkboxInput("model_rrl" , label = "Model: + railroad length (show/hide)", value = FALSE),
       
       #fluidRow(column(2, ("Cars: ")), column(8, verbatimTextOutput("cars"))),
-
+      submitButton("Submit"),
+      
       hr(),
       #submitButton("Submit"),
       
       h3("Usage"),
-      ("Determine a population, somewhere between 14 and 20 million."),
-      ("Choose one of the models to predict the number of cars. See which factor influences the number of cars the most."),
+      ("Set a population, a total length of roads (km) and a total length of railrod (km) using the sliders."),
+      ("Choose one (or more) models to predict the number of cars given the set input. See which factor influences the number of cars the most."),
       ("Click on the submit button to activate a new calculation and change the plot."),
       ("Model 1 only takes the population into account, model 2 also takes the total length of the roads into account and the third model also takes the total lenght of the railroad into account."),
       hr(),
